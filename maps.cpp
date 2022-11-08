@@ -1,14 +1,8 @@
 #include "maps.hpp"
+#include "global.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-
-#ifdef __unix__
-char separatorMaps = '/';
-#elif defined(_WIN32) || defined(WIN32)
-#define OS_Windows
-// char separatorMaps = '\';
-#endif
 
 Maps::Maps()
 {
@@ -25,7 +19,7 @@ void Maps::LoadFile()
         folder = filename;
         for (auto i = folder.size() - 1; i > 0; i--)
         {
-            if (folder.at(i) == separatorMaps)
+            if (folder.at(i) == separator)
                 break;
             else
                 folder.pop_back();
@@ -47,7 +41,7 @@ void Maps::LoadFile()
                 dmMapFile = tmpStr.substr(begin + 8, end - begin - 8);
                 for (auto i = 0u; i < dmMapFile.size(); i++)
                 {
-                    if (dmMapFile.at(0) == separatorMaps)
+                    if (dmMapFile.at(0) == separator)
                     {
                         dmMapFile = dmMapFile.substr(1, dmMapFile.size() - 1);
                         break;
@@ -61,7 +55,7 @@ void Maps::LoadFile()
                 pcMapFile = tmpStr.substr(begin + 8, end - begin - 8);
                 for (auto i = 0u; i < pcMapFile.size(); i++)
                 {
-                    if (pcMapFile.at(0) == separatorMaps)
+                    if (pcMapFile.at(0) == separator)
                     {
                         pcMapFile = pcMapFile.substr(1, pcMapFile.size() - 1);
                         break;

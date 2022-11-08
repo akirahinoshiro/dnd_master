@@ -2,12 +2,13 @@
 #include <filesystem>
 #include <fstream>
 // #include <iostream>
+#include "global.hpp"
 
 #ifdef __unix__
-char separator = '/';
+const unsigned char separator = '/';
 #elif defined(_WIN32) || defined(WIN32)
 #define OS_Windows
-// char separator = '\';
+const unsigned char separator = '\\';
 #endif
 
 Campaign::Campaign()

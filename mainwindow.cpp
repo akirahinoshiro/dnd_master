@@ -39,10 +39,23 @@ void MainWindow::LoadCampaign(QString filename)
     campaign.LoadCampaign(filename.toStdString());
 
     uiDm->gvDm->setScene(&dmScene);
+    uiDm->gvDm->setBackgroundBrush(QBrush(Qt::black, Qt::SolidPattern));
     QPixmap pixmapDm(QString::fromStdString(campaign.maps.front()->dmMapFile));
     dmScene.addPixmap(pixmapDm);
-    uiDm->gvDm->scale(.5, .5);
+    uiDm->gvDm->scale(2.5, 2.5);
+    QPixmap pixmap(100, 100);
+    QPainter p(&pixmap);
+    p.setRenderHint(QPainter::Antialiasing);
+    QPainterPath path;
+    path.addRect(0, 0, pixmap.width(), pixmap.height());
+    QPen pen(Qt::blue, 0);
+    p.setPen(pen);
+    p.fillPath(path, Qt::blue);
+    p.drawPath(path);
+    dmScene.addPixmap(pixmap);
+
     uiPc->gvPc->setScene(&pcScene);
+    uiPc->gvPc->setBackgroundBrush(QBrush(Qt::black, Qt::SolidPattern));
     QPixmap pixmapPc(QString::fromStdString(campaign.maps.front()->pcMapFile));
     pcScene.addPixmap(pixmapPc);
 }
