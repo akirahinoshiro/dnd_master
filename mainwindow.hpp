@@ -8,6 +8,7 @@
 namespace Ui
 {
 class MainWindow;
+class EditCampaign;
 class Campaign;
 class DmMap;
 class PcMap;
@@ -23,9 +24,11 @@ class MainWindow : public QMainWindow
 
   private:
     Ui::MainWindow *ui;
+    Ui::EditCampaign *uiEditCampaign;
     Ui::Campaign *uiCampaign;
     Ui::DmMap *uiDm;
     Ui::PcMap *uiPc;
+    QWidget editCampaignWidget;
     QWidget campaignWidget;
     QWidget dmWidget;
     QWidget pcWidget;
@@ -35,6 +38,7 @@ class MainWindow : public QMainWindow
 
   private slots:
     void OpenSlot();
+    void EditCampaignNewSlot();
     void LoadCampaign(QString filename);
 };
 
