@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "campaign.hpp"
+#include "editcampaign.hpp"
 #include <QGraphicsScene>
 #include <QMainWindow>
 
@@ -23,6 +24,8 @@ class MainWindow : public QMainWindow
     ~MainWindow();
 
   private:
+    Campaign campaign;
+    EditCampaign editCampaign;
     Ui::MainWindow *ui;
     Ui::EditCampaign *uiEditCampaign;
     Ui::Campaign *uiCampaign;
@@ -32,14 +35,13 @@ class MainWindow : public QMainWindow
     QWidget campaignWidget;
     QWidget dmWidget;
     QWidget pcWidget;
-    Campaign campaign;
     QGraphicsScene dmScene;
     QGraphicsScene pcScene;
 
   private slots:
-    void OpenSlot();
+    // void OpenSlot();
+    // void CampaignLoadSlot(QString filename);
     void EditCampaignNewSlot();
-    void LoadCampaign(QString filename);
 };
 
 #endif // MAINWINDOW_H

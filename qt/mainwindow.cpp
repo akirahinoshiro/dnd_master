@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->pc_layout->addWidget(&pcWidget);
     ui->splitter->setStretchFactor(0, 2);
 
-    connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(OpenSlot()));
+    // connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(OpenSlot()));
     connect(uiEditCampaign->newEditCampaignBtn, SIGNAL(clicked()), this, SLOT(EditCampaignNewSlot()));
     // LoadCampaign("/home/tosch/.projects/private/dnd_master/campaigns/dragon_of_icespire_peak/base.xml");
 }
@@ -76,37 +76,37 @@ void MainWindow::EditCampaignNewSlot()
     file.close();
 }
 
-void MainWindow::OpenSlot()
-{
-    // QString filter = "*.xml";
-    // QStringList filenameList = QFileDialog::getOpenFileNames(this, "Select a file to open...", QDir::homePath(), filter);
-    // if (filenameList.size())
-    //     LoadCampaign(filenameList.at(0));
-}
+// void MainWindow::OpenSlot()
+// {
+//     // QString filter = "*.xml";
+//     // QStringList filenameList = QFileDialog::getOpenFileNames(this, "Select a file to open...", QDir::homePath(), filter);
+//     // if (filenameList.size())
+//     //     LoadCampaign(filenameList.at(0));
+// }
 
-void MainWindow::LoadCampaign(QString filename)
-{
-    // campaign.LoadCampaign(filename.toStdString());
+// void MainWindow::CampaignLoadSlot(QString filename)
+// {
+// campaign.LoadCampaign(filename.toStdString());
 
-    // uiDm->gvDm->setScene(&dmScene);
-    // uiDm->gvDm->setBackgroundBrush(QBrush(Qt::black, Qt::SolidPattern));
-    // QPixmap pixmapDm(QString::fromStdString(campaign.maps.front()->dmMapFile));
-    // dmScene.addPixmap(pixmapDm);
-    // uiDm->gvDm->scale(2.5, 2.5);
+// uiDm->gvDm->setScene(&dmScene);
+// uiDm->gvDm->setBackgroundBrush(QBrush(Qt::black, Qt::SolidPattern));
+// QPixmap pixmapDm(QString::fromStdString(campaign.maps.front()->dmMapFile));
+// dmScene.addPixmap(pixmapDm);
+// uiDm->gvDm->scale(2.5, 2.5);
 
-    // // QPixmap pixmap(100, 100);
-    // // QPainter p(&pixmap);
-    // // p.setRenderHint(QPainter::Antialiasing);
-    // // QPainterPath path;
-    // // path.addRect(0, 0, pixmap.width(), pixmap.height());
-    // // QPen pen(Qt::blue, 0);
-    // // p.setPen(pen);
-    // // p.fillPath(path, Qt::blue);
-    // // p.drawPath(path);
-    // // dmScene.addPixmap(pixmap);
+// // QPixmap pixmap(100, 100);
+// // QPainter p(&pixmap);
+// // p.setRenderHint(QPainter::Antialiasing);
+// // QPainterPath path;
+// // path.addRect(0, 0, pixmap.width(), pixmap.height());
+// // QPen pen(Qt::blue, 0);
+// // p.setPen(pen);
+// // p.fillPath(path, Qt::blue);
+// // p.drawPath(path);
+// // dmScene.addPixmap(pixmap);
 
-    // uiPc->gvPc->setScene(&pcScene);
-    // uiPc->gvPc->setBackgroundBrush(QBrush(Qt::black, Qt::SolidPattern));
-    // QPixmap pixmapPc(QString::fromStdString(campaign.maps.front()->pcMapFile));
-    // pcScene.addPixmap(pixmapPc);
-}
+// uiPc->gvPc->setScene(&pcScene);
+// uiPc->gvPc->setBackgroundBrush(QBrush(Qt::black, Qt::SolidPattern));
+// QPixmap pixmapPc(QString::fromStdString(campaign.maps.front()->pcMapFile));
+// pcScene.addPixmap(pixmapPc);
+// }

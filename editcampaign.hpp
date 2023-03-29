@@ -1,5 +1,8 @@
 #pragma once
 
-namespace EditCampaign
+class EditCampaign
 {
+  public:
+    EditCampaign();
+    ~EditCampaign();
 };
