@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete uiEditCampaign;
     delete uiCampaign;
     delete uiDm;
     delete uiPc;
