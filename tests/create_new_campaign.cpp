@@ -12,4 +12,5 @@ int main(int argc, char **argv)
     filename.push_back(separator);
     filename.append("ctest_campaign.json");
     editCampaign.CreateNew(filename);
+    editCampaign.SetBaseInformation("", "", "", "");
 }

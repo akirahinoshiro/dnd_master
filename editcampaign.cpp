@@ -1,10 +1,13 @@
 #include "editcampaign.hpp"
 #include "../global.hpp"
+#include <boost/property_tree/json_parser.hpp>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 
 EditCampaign::EditCampaign()
 {
+    basePtreeChanged = false;
 }
 
 EditCampaign::~EditCampaign()
@@ -14,7 +17,8 @@ EditCampaign::~EditCampaign()
 void EditCampaign::CreateNew(std::string baseFilename)
 {
     std::filesystem::create_directory(std::filesystem::path(baseFilename).parent_path());
-    std::ofstream file(baseFilename);
+    baseFileNameStr = baseFilename;
+    std::ofstream file(baseFileNameStr);
     file.close();
     std::string parentPath = std::filesystem::path(baseFilename).parent_path();
     parentPath.push_back(separator);
@@ -42,4 +46,27 @@ void EditCampaign::CreateNew(std::string baseFilename)
     filenameEmpty.append("chars.json");
     file.open(filenameEmpty);
     file.close();
+
+    write_json(baseFilename, basePtree);
+    basePtreeChanged = false;
+}
+
+void EditCampaign::SetBaseInformation(std::string title, std::string mapsFile, std::string enemiesFile, std::string charsFile)
+{
+    titleStr = title;
+    mapsFileStr = mapsFile;
+    enemiesFileStr = enemiesFile;
+    charsFileStr = charsFile;
+
+    basePtree.put("title", titleStr);
+    basePtree.put("mapsFile", mapsFileStr);
+    basePtree.put("enemiesFile", enemiesFileStr);
+    basePtree.put("charsFile", charsFileStr);
+
+    write_json(baseFileNameStr, basePtree);
+    basePtreeChanged = false;
+
+    // std::stringstream ss;
+    // boost::property_tree::json_parser::write_json(ss, basePtree);
+    // std::cout << ss.str() << std::endl;
 }
