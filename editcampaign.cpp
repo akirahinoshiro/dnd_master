@@ -71,9 +71,42 @@ void EditCampaign::SetBaseInformation(std::string title, std::string mapsFile, s
 
 void EditCampaign::SaveFiles()
 {
-    write_json(baseFileNameStr, basePtree);
-    write_json(mapsFileAbsStr, mapsPtree);
-    write_json(enemiesFileAbsStr, enemiesPtree);
-    write_json(charsFileAbsStr, charsPtree);
+    if (std::filesystem::is_regular_file(baseFileNameStr))
+    {
+        write_json(baseFileNameStr, basePtree);
+    }
+    if (std::filesystem::is_regular_file(mapsFileAbsStr))
+    {
+        write_json(mapsFileAbsStr, mapsPtree);
+    }
+    if (std::filesystem::is_regular_file(enemiesFileAbsStr))
+    {
+        write_json(enemiesFileAbsStr, enemiesPtree);
+    }
+    if (std::filesystem::is_regular_file(charsFileAbsStr))
+    {
+        write_json(charsFileAbsStr, charsPtree);
+    }
+    filesModified = false;
+}
+
+void EditCampaign::LoadFiles()
+{
+    if (std::filesystem::is_regular_file(baseFileNameStr))
+    {
+        read_json(baseFileNameStr, basePtree);
+    }
+    if (std::filesystem::is_regular_file(mapsFileAbsStr))
+    {
+        read_json(mapsFileAbsStr, mapsPtree);
+    }
+    if (std::filesystem::is_regular_file(enemiesFileAbsStr))
+    {
+        read_json(enemiesFileAbsStr, enemiesPtree);
+    }
+    if (std::filesystem::is_regular_file(charsFileAbsStr))
+    {
+        read_json(charsFileAbsStr, charsPtree);
+    }
     filesModified = false;
 }

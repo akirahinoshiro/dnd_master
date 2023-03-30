@@ -10,6 +10,7 @@ class EditCampaign
     void CreateNew(std::string baseFilename);
     void SetBaseInformation(std::string title = "", std::string mapsFile = "", std::string enemiesFile = "", std::string charsFile = "");
     void SaveFiles();
+    void LoadFiles();
     bool filesModified;
 
   private:

@@ -14,4 +14,6 @@ int main(int argc, char **argv)
     editCampaign.CreateNew(filename);
     editCampaign.SetBaseInformation("title");
     editCampaign.SaveFiles();
+    editCampaign.LoadFiles();
+    editCampaign.SaveFiles();
 }
