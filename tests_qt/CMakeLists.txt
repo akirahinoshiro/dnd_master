@@ -28,22 +28,23 @@ FOREACH(X IN LISTS TESTS)
     )
     add_test(NAME ${tests}_functional COMMAND $<TARGET_FILE:${tests}>)
 
-    # this is not working when using fsanitize=address
-
-    # add_test(NAME ${tests}_memory_check
-    # COMMAND valgrind
-    # --error-exitcode=1
-    # --tool=memcheck
-    # --leak-check=full
-    # --errors-for-leak-kinds=definite
-    # --show-leak-kinds=definite $<TARGET_FILE:${tests}>
-    # WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
-    # add_test(NAME ${tests}_callgrind
-    # COMMAND valgrind
-    # --tool=callgrind
-    # --dump-instr=yes
-    # --instr-atstart=yes
-    # -v -d
-    # $<TARGET_FILE:${tests}>
-    # )
+    if(Callgrind STREQUAL "ON")
+        # this is not working when using fsanitize=address
+        add_test(NAME ${tests}_memory_check
+            COMMAND valgrind
+            --error-exitcode=1
+            --tool=memcheck
+            --leak-check=full
+            --errors-for-leak-kinds=definite
+            --show-leak-kinds=definite $<TARGET_FILE:${tests}>
+            WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+        add_test(NAME ${tests}_callgrind
+            COMMAND valgrind
+            --tool=callgrind
+            --dump-instr=yes
+            --instr-atstart=yes
+            -v -d
+            $<TARGET_FILE:${tests}>
+        )
+    endif()
 ENDFOREACH()
