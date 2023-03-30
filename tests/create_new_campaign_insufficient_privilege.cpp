@@ -8,9 +8,9 @@ int main(int argc, char **argv)
 {
     EditCampaign editCampaign;
     std::string filename;
-    filename.push_back(separator);
+    filename.push_back(std::filesystem::path::preferred_separator);
     filename.append("ctest_campaign");
-    filename.push_back(separator);
+    filename.push_back(std::filesystem::path::preferred_separator);
     filename.append("ctest_campaign.json");
     try
     {

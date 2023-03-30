@@ -4,13 +4,6 @@
 // #include <iostream>
 #include "global.hpp"
 
-#ifdef __unix__
-const unsigned char separator = '/';
-#elif defined(_WIN32) || defined(WIN32)
-#define OS_Windows
-const unsigned char separator = '\\';
-#endif
-
 Campaign::Campaign()
 {
 }

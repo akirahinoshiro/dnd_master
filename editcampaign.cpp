@@ -7,7 +7,7 @@
 
 EditCampaign::EditCampaign()
 {
-    basePtreeChanged = false;
+    filesModified = false;
 }
 
 EditCampaign::~EditCampaign()
@@ -17,56 +17,63 @@ EditCampaign::~EditCampaign()
 void EditCampaign::CreateNew(std::string baseFilename)
 {
     std::filesystem::create_directory(std::filesystem::path(baseFilename).parent_path());
+    parentFolderStr = std::filesystem::path(baseFilename).parent_path();
+    parentFolderStr.push_back(std::filesystem::path::preferred_separator);
     baseFileNameStr = baseFilename;
-    std::ofstream file(baseFileNameStr);
-    file.close();
-    std::string parentPath = std::filesystem::path(baseFilename).parent_path();
-    parentPath.push_back(separator);
-    std::filesystem::create_directory(parentPath + "maps");
-    std::filesystem::create_directory(parentPath + "enemies");
-    std::filesystem::create_directory(parentPath + "chars");
-    std::string filenameEmpty = parentPath;
-    filenameEmpty.push_back(separator);
-    filenameEmpty.append("maps");
-    filenameEmpty.push_back(separator);
-    filenameEmpty.append("maps.json");
-    file.open(filenameEmpty);
-    file.close();
-    filenameEmpty = parentPath;
-    filenameEmpty.push_back(separator);
-    filenameEmpty.append("enemies");
-    filenameEmpty.push_back(separator);
-    filenameEmpty.append("enemies.json");
-    file.open(filenameEmpty);
-    file.close();
-    filenameEmpty = parentPath;
-    filenameEmpty.push_back(separator);
-    filenameEmpty.append("chars");
-    filenameEmpty.push_back(separator);
-    filenameEmpty.append("chars.json");
-    file.open(filenameEmpty);
-    file.close();
 
-    write_json(baseFilename, basePtree);
-    basePtreeChanged = false;
+    mapsFolderStr = "maps";
+    mapsFolderStr.push_back(std::filesystem::path::preferred_separator);
+    mapsFileStr = "maps.json";
+    mapsFileAbsStr = parentFolderStr + mapsFolderStr + mapsFileStr;
+    std::filesystem::create_directory(std::filesystem::path(mapsFileAbsStr).parent_path());
+
+    enemiesFolderStr = "enemies";
+    enemiesFolderStr.push_back(std::filesystem::path::preferred_separator);
+    enemiesFileStr = "enemies.json";
+    enemiesFileAbsStr = parentFolderStr + enemiesFolderStr + enemiesFileStr;
+    std::filesystem::create_directory(std::filesystem::path(enemiesFileAbsStr).parent_path());
+
+    charsFolderStr = "chars";
+    charsFolderStr.push_back(std::filesystem::path::preferred_separator);
+    charsFileStr = "chars.json";
+    charsFileAbsStr = parentFolderStr + charsFolderStr + charsFileStr;
+    std::filesystem::create_directory(std::filesystem::path(charsFileAbsStr).parent_path());
+
+    SetBaseInformation("new", mapsFolderStr + mapsFileStr, enemiesFolderStr + enemiesFileStr, charsFolderStr + charsFileStr);
+    SaveFiles();
 }
 
 void EditCampaign::SetBaseInformation(std::string title, std::string mapsFile, std::string enemiesFile, std::string charsFile)
 {
-    titleStr = title;
-    mapsFileStr = mapsFile;
-    enemiesFileStr = enemiesFile;
-    charsFileStr = charsFile;
+    if (!title.empty())
+    {
+        titleStr = title;
+        basePtree.put("title", titleStr);
+    }
+    if (!mapsFile.empty())
+    {
+        mapsFileStr = mapsFile;
+        basePtree.put("mapsFile", mapsFileStr);
+    }
+    if (!enemiesFile.empty())
+    {
+        enemiesFileStr = enemiesFile;
+        basePtree.put("enemiesFile", enemiesFileStr);
+    }
+    if (!charsFile.empty())
+    {
+        charsFileStr = charsFile;
+        basePtree.put("charsFile", charsFileStr);
+    }
 
-    basePtree.put("title", titleStr);
-    basePtree.put("mapsFile", mapsFileStr);
-    basePtree.put("enemiesFile", enemiesFileStr);
-    basePtree.put("charsFile", charsFileStr);
+    filesModified = true;
+}
 
+void EditCampaign::SaveFiles()
+{
     write_json(baseFileNameStr, basePtree);
-    basePtreeChanged = false;
-
-    // std::stringstream ss;
-    // boost::property_tree::json_parser::write_json(ss, basePtree);
-    // std::cout << ss.str() << std::endl;
+    write_json(mapsFileAbsStr, mapsPtree);
+    write_json(enemiesFileAbsStr, enemiesPtree);
+    write_json(charsFileAbsStr, charsPtree);
+    filesModified = false;
 }
