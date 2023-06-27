@@ -22,7 +22,7 @@
     </widget>
    </item>
    <item row="0" column="2">
-    <widget class="QPushButton" name="saveCampaignWidget">
+    <widget class="QPushButton" name="saveEditCampaignBtn">
      <property name="text">
       <string>save</string>
      </property>
@@ -45,7 +45,7 @@
     </layout>
    </item>
    <item row="0" column="3">
-    <widget class="QPushButton" name="loadCampaignWidget">
+    <widget class="QPushButton" name="loadEditCampaignBtn">
      <property name="text">
       <string>load</string>
      </property>

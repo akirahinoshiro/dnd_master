@@ -20,24 +20,40 @@ void EditCampaign::CreateNew(std::string baseFilename)
     parentFolderStr = std::filesystem::path(baseFilename).parent_path();
     parentFolderStr.push_back(std::filesystem::path::preferred_separator);
     baseFileNameStr = baseFilename;
+    if (!std::filesystem::is_regular_file(baseFileNameStr))
+    {
+        std::ofstream outfile(baseFileNameStr);
+    }
 
     mapsFolderStr = "maps";
     mapsFolderStr.push_back(std::filesystem::path::preferred_separator);
     mapsFileStr = "maps.json";
     mapsFileAbsStr = parentFolderStr + mapsFolderStr + mapsFileStr;
     std::filesystem::create_directory(std::filesystem::path(mapsFileAbsStr).parent_path());
+    if (!std::filesystem::is_regular_file(mapsFileAbsStr))
+    {
+        std::ofstream outfile(mapsFileAbsStr);
+    }
 
     enemiesFolderStr = "enemies";
     enemiesFolderStr.push_back(std::filesystem::path::preferred_separator);
     enemiesFileStr = "enemies.json";
     enemiesFileAbsStr = parentFolderStr + enemiesFolderStr + enemiesFileStr;
     std::filesystem::create_directory(std::filesystem::path(enemiesFileAbsStr).parent_path());
+    if (!std::filesystem::is_regular_file(enemiesFileAbsStr))
+    {
+        std::ofstream outfile(enemiesFileAbsStr);
+    }
 
     charsFolderStr = "chars";
     charsFolderStr.push_back(std::filesystem::path::preferred_separator);
     charsFileStr = "chars.json";
     charsFileAbsStr = parentFolderStr + charsFolderStr + charsFileStr;
     std::filesystem::create_directory(std::filesystem::path(charsFileAbsStr).parent_path());
+    if (!std::filesystem::is_regular_file(charsFileAbsStr))
+    {
+        std::ofstream outfile(charsFileAbsStr);
+    }
 
     SetBaseInformation("new", mapsFolderStr + mapsFileStr, enemiesFolderStr + enemiesFileStr, charsFolderStr + charsFileStr);
     SaveFiles();
@@ -90,11 +106,15 @@ void EditCampaign::SaveFiles()
     filesModified = false;
 }
 
-void EditCampaign::LoadFiles()
+void EditCampaign::LoadFiles(std::string baseFilename)
 {
-    if (std::filesystem::is_regular_file(baseFileNameStr))
+    if (std::filesystem::is_regular_file(baseFilename))
     {
+        parentFolderStr = std::filesystem::path(baseFilename).parent_path();
+        parentFolderStr.push_back(std::filesystem::path::preferred_separator);
+        baseFileNameStr = baseFilename;
         read_json(baseFileNameStr, basePtree);
+        LoadBaseFile();
     }
     if (std::filesystem::is_regular_file(mapsFileAbsStr))
     {
@@ -109,4 +129,67 @@ void EditCampaign::LoadFiles()
         read_json(charsFileAbsStr, charsPtree);
     }
     filesModified = false;
+}
+
+std::string EditCampaign::GetTitle()
+{
+    return titleStr;
+}
+
+void EditCampaign::LoadBaseFile()
+{
+    int properties = 0;
+    using boost::property_tree::ptree;
+    ptree::const_iterator end = basePtree.end();
+    for (ptree::const_iterator it = basePtree.begin(); it != end; ++it)
+    {
+        if (it->first == "title")
+        {
+            titleStr = it->second.get_value<std::string>();
+            properties++;
+        }
+        if (it->first == "mapsFile")
+        {
+            if (std::filesystem::is_regular_file(parentFolderStr + it->second.get_value<std::string>()))
+            {
+                mapsFileAbsStr = std::filesystem::path(parentFolderStr + it->second.get_value<std::string>()).parent_path();
+                mapsFileAbsStr.push_back(std::filesystem::path::preferred_separator);
+                mapsFileStr = parentFolderStr + it->second.get_value<std::string>();
+                mapsFolderStr = std::filesystem::path(mapsFileStr).parent_path();
+                mapsFolderStr.push_back(std::filesystem::path::preferred_separator);
+                mapsFolderStr = mapsFolderStr.substr(parentFolderStr.size(), mapsFolderStr.size());
+                properties++;
+            }
+        }
+        if (it->first == "enemiesFile")
+        {
+            if (std::filesystem::is_regular_file(parentFolderStr + it->second.get_value<std::string>()))
+            {
+                enemiesFileAbsStr = std::filesystem::path(parentFolderStr + it->second.get_value<std::string>()).parent_path();
+                enemiesFileAbsStr.push_back(std::filesystem::path::preferred_separator);
+                enemiesFileStr = parentFolderStr + it->second.get_value<std::string>();
+                enemiesFolderStr = std::filesystem::path(enemiesFileStr).parent_path();
+                enemiesFolderStr.push_back(std::filesystem::path::preferred_separator);
+                enemiesFolderStr = enemiesFolderStr.substr(parentFolderStr.size(), enemiesFolderStr.size());
+                properties++;
+            }
+        }
+        if (it->first == "charsFile")
+        {
+            if (std::filesystem::is_regular_file(parentFolderStr + it->second.get_value<std::string>()))
+            {
+                charsFileAbsStr = std::filesystem::path(parentFolderStr + it->second.get_value<std::string>()).parent_path();
+                charsFileAbsStr.push_back(std::filesystem::path::preferred_separator);
+                charsFileStr = parentFolderStr + it->second.get_value<std::string>();
+                charsFolderStr = std::filesystem::path(charsFileStr).parent_path();
+                charsFolderStr.push_back(std::filesystem::path::preferred_separator);
+                charsFolderStr = charsFolderStr.substr(parentFolderStr.size(), charsFolderStr.size());
+                properties++;
+            }
+        }
+    }
+    if (properties < 4)
+    {
+        throw std::runtime_error("base file did not cover all minimum parameters");
+    }
 }

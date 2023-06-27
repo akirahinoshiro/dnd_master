@@ -10,10 +10,12 @@ class EditCampaign
     void CreateNew(std::string baseFilename);
     void SetBaseInformation(std::string title = "", std::string mapsFile = "", std::string enemiesFile = "", std::string charsFile = "");
     void SaveFiles();
-    void LoadFiles();
+    void LoadFiles(std::string baseFilename);
+    std::string GetTitle();
     bool filesModified;
 
   private:
+    void LoadBaseFile();
     boost::property_tree::ptree basePtree;
     boost::property_tree::ptree mapsPtree;
     boost::property_tree::ptree enemiesPtree;

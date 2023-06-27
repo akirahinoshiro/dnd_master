@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     // connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(OpenSlot()));
     connect(uiEditCampaign->newEditCampaignBtn, SIGNAL(clicked()), this, SLOT(EditCampaignNewSlot()));
+    connect(uiEditCampaign->saveEditCampaignBtn, SIGNAL(clicked()), this, SLOT(EditCampaignSaveSlot()));
+    connect(uiEditCampaign->loadEditCampaignBtn, SIGNAL(clicked()), this, SLOT(EditCampaignLoadSlot()));
     // LoadCampaign("/home/tosch/.projects/private/dnd_master/campaigns/dragon_of_icespire_peak/base.xml");
 }
 
@@ -43,19 +45,40 @@ void MainWindow::EditCampaignNewSlot()
 {
     QString filter = "*.json";
     auto filename = QFileDialog::getSaveFileName(this, "Select a file to save...", QDir::homePath(), filter);
-    if (!(filename.mid(filename.size() - filter.size() + 1, filter.size() - 1) == filter.mid(1, filter.size() - 1)))
+    if (filename.size())
     {
-        filename.append(".json");
+        if (!(filename.mid(filename.size() - filter.size() + 1, filter.size() - 1) == filter.mid(1, filter.size() - 1)))
+        {
+            filename.append(".json");
+        }
+        editCampaign.CreateNew(filename.toStdString());
     }
-    editCampaign.CreateNew(filename.toStdString());
+}
+
+void MainWindow::EditCampaignSaveSlot()
+{
+}
+
+void MainWindow::EditCampaignLoadSlot()
+{
+    QString filter = "*.json";
+    auto filename = QFileDialog::getOpenFileName(this, "Select a file to load...", QDir::homePath(), filter);
+    if (filename.size())
+    {
+        if (!(filename.mid(filename.size() - filter.size() + 1, filter.size() - 1) == filter.mid(1, filter.size() - 1)))
+        {
+            filename.append(".json");
+        }
+        editCampaign.LoadFiles(filename.toStdString());
+    }
 }
 
 // void MainWindow::OpenSlot()
 // {
-//     // QString filter = "*.xml";
-//     // QStringList filenameList = QFileDialog::getOpenFileNames(this, "Select a file to open...", QDir::homePath(), filter);
-//     // if (filenameList.size())
-//     //     LoadCampaign(filenameList.at(0));
+// QString filter = "*.xml";
+// QStringList filenameList = QFileDialog::getOpenFileNames(this, "Select a file to open...", QDir::homePath(), filter);
+// if (filenameList.size())
+//     LoadCampaign(filenameList.at(0));
 // }
 
 // void MainWindow::CampaignLoadSlot(QString filename)

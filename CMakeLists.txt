@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.12)
 set(Callgrind OFF)
 
 # add_definitions(-DUSE_QT)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   # using Clang or GCC

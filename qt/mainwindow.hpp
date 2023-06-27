@@ -42,6 +42,10 @@ class MainWindow : public QMainWindow
     // void OpenSlot();
     // void CampaignLoadSlot(QString filename);
     void EditCampaignNewSlot();
+    void EditCampaignSaveSlot();
+    void EditCampaignLoadSlot();
+    // void EditCampaignNewSlot();
+    // void EditCampaignNewSlot();
 };
 
 #endif // MAINWINDOW_H
