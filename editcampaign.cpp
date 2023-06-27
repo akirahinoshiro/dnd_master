@@ -188,7 +188,7 @@ void EditCampaign::LoadBaseFile()
             }
         }
     }
-    if (properties < 4)
+    if (properties != 4)
     {
         throw std::runtime_error("base file did not cover all minimum parameters");
     }
