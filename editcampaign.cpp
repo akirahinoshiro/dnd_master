@@ -93,7 +93,7 @@ void EditCampaign::SaveFiles()
     }
     if (std::filesystem::is_regular_file(mapsFileAbsStr))
     {
-        write_json(mapsFileAbsStr, mapsPtree);
+        // write_json(mapsFileAbsStr, mapsPtree);
     }
     if (std::filesystem::is_regular_file(enemiesFileAbsStr))
     {
@@ -118,7 +118,7 @@ void EditCampaign::LoadFiles(std::string baseFilename)
     }
     if (std::filesystem::is_regular_file(mapsFileAbsStr))
     {
-        read_json(mapsFileAbsStr, mapsPtree);
+        // read_json(mapsFileAbsStr, mapsPtree);
     }
     if (std::filesystem::is_regular_file(enemiesFileAbsStr))
     {
@@ -152,12 +152,15 @@ void EditCampaign::LoadBaseFile()
         {
             if (std::filesystem::is_regular_file(parentFolderStr + it->second.get_value<std::string>()))
             {
-                mapsFileAbsStr = std::filesystem::path(parentFolderStr + it->second.get_value<std::string>()).parent_path();
-                mapsFileAbsStr.push_back(std::filesystem::path::preferred_separator);
-                mapsFileStr = parentFolderStr + it->second.get_value<std::string>();
-                mapsFolderStr = std::filesystem::path(mapsFileStr).parent_path();
+                // mapsFileAbsStr = std::filesystem::path(parentFolderStr + it->second.get_value<std::string>()).parent_path();
+                // mapsFileAbsStr.push_back(std::filesystem::path::preferred_separator);
+                // mapsFileStr = parentFolderStr + it->second.get_value<std::string>();
+                // mapsFileAbsStr = mapsFileStr;
+                mapsFileAbsStr = parentFolderStr + it->second.get_value<std::string>();
+                mapsFolderStr = std::filesystem::path(mapsFileAbsStr).parent_path();
                 mapsFolderStr.push_back(std::filesystem::path::preferred_separator);
                 mapsFolderStr = mapsFolderStr.substr(parentFolderStr.size(), mapsFolderStr.size());
+                mapsFileStr = mapsFileAbsStr.substr(parentFolderStr.size() + mapsFolderStr.size(), mapsFileAbsStr.size());
                 properties++;
             }
         }
@@ -165,12 +168,12 @@ void EditCampaign::LoadBaseFile()
         {
             if (std::filesystem::is_regular_file(parentFolderStr + it->second.get_value<std::string>()))
             {
-                enemiesFileAbsStr = std::filesystem::path(parentFolderStr + it->second.get_value<std::string>()).parent_path();
-                enemiesFileAbsStr.push_back(std::filesystem::path::preferred_separator);
-                enemiesFileStr = parentFolderStr + it->second.get_value<std::string>();
-                enemiesFolderStr = std::filesystem::path(enemiesFileStr).parent_path();
-                enemiesFolderStr.push_back(std::filesystem::path::preferred_separator);
-                enemiesFolderStr = enemiesFolderStr.substr(parentFolderStr.size(), enemiesFolderStr.size());
+                // enemiesFileAbsStr = std::filesystem::path(parentFolderStr + it->second.get_value<std::string>()).parent_path();
+                // enemiesFileAbsStr.push_back(std::filesystem::path::preferred_separator);
+                // enemiesFileStr = parentFolderStr + it->second.get_value<std::string>();
+                // enemiesFolderStr = std::filesystem::path(enemiesFileStr).parent_path();
+                // enemiesFolderStr.push_back(std::filesystem::path::preferred_separator);
+                // enemiesFolderStr = enemiesFolderStr.substr(parentFolderStr.size(), enemiesFolderStr.size());
                 properties++;
             }
         }
@@ -178,12 +181,12 @@ void EditCampaign::LoadBaseFile()
         {
             if (std::filesystem::is_regular_file(parentFolderStr + it->second.get_value<std::string>()))
             {
-                charsFileAbsStr = std::filesystem::path(parentFolderStr + it->second.get_value<std::string>()).parent_path();
-                charsFileAbsStr.push_back(std::filesystem::path::preferred_separator);
-                charsFileStr = parentFolderStr + it->second.get_value<std::string>();
-                charsFolderStr = std::filesystem::path(charsFileStr).parent_path();
-                charsFolderStr.push_back(std::filesystem::path::preferred_separator);
-                charsFolderStr = charsFolderStr.substr(parentFolderStr.size(), charsFolderStr.size());
+                // charsFileAbsStr = std::filesystem::path(parentFolderStr + it->second.get_value<std::string>()).parent_path();
+                // charsFileAbsStr.push_back(std::filesystem::path::preferred_separator);
+                // charsFileStr = parentFolderStr + it->second.get_value<std::string>();
+                // charsFolderStr = std::filesystem::path(charsFileStr).parent_path();
+                // charsFolderStr.push_back(std::filesystem::path::preferred_separator);
+                // charsFolderStr = charsFolderStr.substr(parentFolderStr.size(), charsFolderStr.size());
                 properties++;
             }
         }

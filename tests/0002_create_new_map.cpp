@@ -15,5 +15,7 @@ int main(int argc, char **argv)
     editCampaign.LoadFiles(filename);
 
     Maps maps(editCampaign.mapsFileStr, editCampaign.mapsFolderStr, editCampaign.mapsFileAbsStr);
-    maps.NewMap("test");
+    maps.NewMap("test0");
+    maps.NewMap("test1");
+    maps.SaveMaps();
 }
