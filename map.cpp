@@ -51,10 +51,14 @@ void Map::CopyFile(std::string absFilePath)
 {
     if (std::filesystem::is_regular_file(absFilePath))
     {
-        // std::filesystem::copy_options::overwrite_existing;
         std::filesystem::copy(absFilePath,
                               std::filesystem::path(mapFileAbsStr).parent_path().string() + std::filesystem::path::preferred_separator +
                                   absFilePath.substr(std::filesystem::path(absFilePath).parent_path().string().size() + 1, absFilePath.size()),
                               std::filesystem::copy_options::overwrite_existing);
+        if (!std::filesystem::is_regular_file(std::filesystem::path(mapFileAbsStr).parent_path().string() + std::filesystem::path::preferred_separator +
+                                              absFilePath.substr(std::filesystem::path(absFilePath).parent_path().string().size() + 1, absFilePath.size())))
+        {
+            throw(std::invalid_argument("resulting filename is not a valid file"));
+        }
     }
 }
