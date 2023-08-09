@@ -1,5 +1,5 @@
-﻿PROJECT(dnd_master)
-cmake_minimum_required(VERSION 2.8.12)
+﻿cmake_minimum_required(VERSION 2.8.12)
+PROJECT(dnd_master)
 set(Callgrind OFF)
 
 # add_definitions(-DUSE_QT)

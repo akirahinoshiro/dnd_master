@@ -18,4 +18,12 @@ int main(int argc, char **argv)
     maps.NewMap("test0");
     maps.NewMap("test1");
     maps.SaveMaps();
+    maps.LoadMaps(editCampaign.mapsFileAbsStr);
+
+    if (maps.maps.size() != 2)
+        return 1;
+    if (maps.maps.at(0).mapFileStr != "test0.json")
+        return 2;
+    if (maps.maps.at(1).mapFileStr != "test1.json")
+        return 3;
 }

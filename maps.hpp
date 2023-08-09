@@ -11,11 +11,12 @@ class Maps
     ~Maps();
     void NewMap(std::string mapName);
     void SaveMaps();
+    void LoadMaps(std::string mapsFileAbs);
+    bool mapsChanged;
+    std::vector<Map> maps;
 
   private:
-    bool mapsChanged;
     boost::property_tree::ptree mapsPtree;
-    std::vector<Map> maps;
     std::string mapsFileStr;
     std::string mapsFolderStr;
     std::string mapsFileAbsStr;
