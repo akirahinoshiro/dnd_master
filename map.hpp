@@ -10,6 +10,7 @@ class Map
     void SaveFile();
     void LoadFile();
     void SetTitle(std::string title);
+    void CopyFile(std::string absFilePath);
     std::string GetTitle();
     std::string mapFileStr;
     std::string mapFolderStr;

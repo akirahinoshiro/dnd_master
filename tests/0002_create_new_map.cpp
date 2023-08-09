@@ -2,7 +2,6 @@
 #include "editcampaign.hpp"
 #include "maps.hpp"
 #include <filesystem>
-#include <iostream>
 
 namespace fs = std::filesystem;
 int main(int argc, char **argv)

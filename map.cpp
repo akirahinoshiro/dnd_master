@@ -2,7 +2,7 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <filesystem>
 #include <fstream>
-#include <iostream>
+// #include <iostream>
 
 Map::Map(std::string mapFile, std::string mapFolder, std::string mapFileAbs)
 {
@@ -33,7 +33,6 @@ void Map::LoadFile()
     {
         if (it->first == "title")
             titleStr = it->second.get_value<std::string>();
-        std::cout << titleStr << std::endl;
     }
 }
 
@@ -45,6 +44,17 @@ void Map::SetTitle(std::string title)
 
 std::string Map::GetTitle()
 {
-    std::cout << titleStr << std::endl;
     return titleStr;
+}
+
+void Map::CopyFile(std::string absFilePath)
+{
+    if (std::filesystem::is_regular_file(absFilePath))
+    {
+        // std::filesystem::copy_options::overwrite_existing;
+        std::filesystem::copy(absFilePath,
+                              std::filesystem::path(mapFileAbsStr).parent_path().string() + std::filesystem::path::preferred_separator +
+                                  absFilePath.substr(std::filesystem::path(absFilePath).parent_path().string().size() + 1, absFilePath.size()),
+                              std::filesystem::copy_options::overwrite_existing);
+    }
 }
