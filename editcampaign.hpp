@@ -13,6 +13,9 @@ class EditCampaign
     void LoadFiles(std::string baseFilename);
     std::string GetTitle();
     bool filesModified;
+    std::string mapsFolderStr;
+    std::string mapsFileStr;
+    std::string mapsFileAbsStr;
 
   private:
     void LoadBaseFile();
@@ -22,9 +25,6 @@ class EditCampaign
     boost::property_tree::ptree charsPtree;
     std::string parentFolderStr;
     std::string baseFileNameStr;
-    std::string mapsFolderStr;
-    std::string mapsFileStr;
-    std::string mapsFileAbsStr;
     std::string enemiesFolderStr;
     std::string enemiesFileStr;
     std::string enemiesFileAbsStr;

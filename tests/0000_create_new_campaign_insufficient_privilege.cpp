@@ -24,5 +24,7 @@ int main(int argc, char **argv)
                   << "code().value():    " << ex.code().value() << '\n'
                   << "code().message():  " << ex.code().message() << '\n'
                   << "code().category(): " << ex.code().category().name() << '\n';
+        return 0;
     }
+    return 1;
 }

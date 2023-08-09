@@ -15,6 +15,7 @@ int main(int argc, char **argv)
         editCampaign.CreateNew(filename);
         editCampaign.SetBaseInformation("title");
         editCampaign.SaveFiles();
+        // set local random name but do not save this
         editCampaign.SetBaseInformation("random");
         if (editCampaign.GetTitle() != "random")
             return 1;

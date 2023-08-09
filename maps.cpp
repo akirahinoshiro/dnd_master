@@ -1,75 +1,24 @@
 #include "maps.hpp"
-#include "global.hpp"
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 
-Maps::Maps()
+Maps::Maps(std::string mapsFile, std::string mapsFolder, std::string mapsFileAbs)
 {
+    mapsFileStr = mapsFile;
+    mapsFolderStr = mapsFolder;
+    mapsFileAbsStr = mapsFileAbs;
 }
 
 Maps::~Maps()
 {
 }
 
-void Maps::LoadFile()
+void Maps::NewMap(std::string mapName)
 {
-    // if (std::filesystem::exists(filename))
-    // {
-    //     folder = filename;
-    //     for (auto i = folder.size() - 1; i > 0; i--)
-    //     {
-    //         if (folder.at(i) == separator)
-    //             break;
-    //         else
-    //             folder.pop_back();
-    //     }
-    //     std::ifstream fileInput(filename);
-    //     std::stringstream buffer;
-    //     buffer << fileInput.rdbuf();
-    //     /// check if it is a valid campaign file
-    //     if (buffer.str().find("<mapfile>") != std::string::npos)
-    //     {
-    //         if (buffer.str().find("</mapfile>") != std::string::npos)
-    //         {
-    //             std::string tmpStr = buffer.str();
-    //             auto begin = tmpStr.find("<title>");
-    //             auto end = tmpStr.find("</title>");
-    //             title = tmpStr.substr(begin + 7, end - begin - 7);
-    //             begin = tmpStr.find("<dm_map>");
-    //             end = tmpStr.find("</dm_map>");
-    //             dmMapFile = tmpStr.substr(begin + 8, end - begin - 8);
-    //             for (auto i = 0u; i < dmMapFile.size(); i++)
-    //             {
-    //                 if (dmMapFile.at(0) == separator)
-    //                 {
-    //                     dmMapFile = dmMapFile.substr(1, dmMapFile.size() - 1);
-    //                     break;
-    //                 }
-    //                 dmMapFile = dmMapFile.substr(1, dmMapFile.size() - 1);
-    //             }
-    //             dmMapFile = folder + dmMapFile;
-    //             title = tmpStr.substr(begin + 7, end - begin - 7);
-    //             begin = tmpStr.find("<pc_map>");
-    //             end = tmpStr.find("</pc_map>");
-    //             pcMapFile = tmpStr.substr(begin + 8, end - begin - 8);
-    //             for (auto i = 0u; i < pcMapFile.size(); i++)
-    //             {
-    //                 if (pcMapFile.at(0) == separator)
-    //                 {
-    //                     pcMapFile = pcMapFile.substr(1, pcMapFile.size() - 1);
-    //                     break;
-    //                 }
-    //                 pcMapFile = pcMapFile.substr(1, pcMapFile.size() - 1);
-    //             }
-    //             pcMapFile = folder + pcMapFile;
-    //         }
-    //     }
-    // }
-}
-
-void Maps::LoadFile(std::string file)
-{
-    // filename = file;
-    // LoadFile();
+    maps.push_back(Map(mapName, mapName + std::filesystem::path::preferred_separator, mapsFileAbsStr + mapName + std::filesystem::path::preferred_separator + mapName + ".json"));
+    std::filesystem::create_directory(std::filesystem::path(maps.back().mapFileAbsStr).parent_path());
+    if (!std::filesystem::is_regular_file(maps.back().mapFileAbsStr))
+    {
+        std::ofstream outfile(maps.back().mapFileAbsStr);
+    }
 }

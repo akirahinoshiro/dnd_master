@@ -24,28 +24,13 @@ class MainWindow : public QMainWindow
     ~MainWindow();
 
   private:
-    Campaign campaign;
-    EditCampaign editCampaign;
     Ui::MainWindow *ui;
     Ui::EditCampaign *uiEditCampaign;
     Ui::Campaign *uiCampaign;
     Ui::DmMap *uiDm;
     Ui::PcMap *uiPc;
-    QWidget editCampaignWidget;
-    QWidget campaignWidget;
-    QWidget dmWidget;
-    QWidget pcWidget;
-    QGraphicsScene dmScene;
-    QGraphicsScene pcScene;
 
   private slots:
-    // void OpenSlot();
-    // void CampaignLoadSlot(QString filename);
-    void EditCampaignNewSlot();
-    void EditCampaignSaveSlot();
-    void EditCampaignLoadSlot();
-    // void EditCampaignNewSlot();
-    // void EditCampaignNewSlot();
 };
 
 #endif // MAINWINDOW_H
