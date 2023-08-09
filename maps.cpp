@@ -31,11 +31,7 @@ void Maps::SaveMaps()
 {
     for (auto idx : maps)
     {
-        std::filesystem::create_directory(std::filesystem::path(idx.mapFileAbsStr).parent_path());
-        if (!std::filesystem::is_regular_file(idx.mapFileAbsStr))
-        {
-            std::ofstream outfile(idx.mapFileAbsStr);
-        }
+        idx.SaveFile();
     }
     write_json(mapsFileAbsStr, mapsPtree);
     mapsChanged = false;
