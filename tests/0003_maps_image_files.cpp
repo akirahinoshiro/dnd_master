@@ -14,8 +14,8 @@ int main(int argc, char **argv)
     filename.append("ctest_campaign.json");
     EditCampaign editCampaign;
     editCampaign.LoadFiles(filename);
-    Maps maps(editCampaign.mapsFileStr, editCampaign.mapsFolderStr, editCampaign.mapsFileAbsStr);
-    maps.LoadMaps(editCampaign.mapsFileAbsStr);
+    Maps maps(editCampaign.GetFileName(), editCampaign.GetFolder(), editCampaign.GetFileAbs());
+    maps.LoadMaps(editCampaign.GetFileAbs());
     std::string fileNameStr = fs::current_path().parent_path().string() + std::filesystem::path::preferred_separator + "tests_qt" + std::filesystem::path::preferred_separator + "pics" +
                               std::filesystem::path::preferred_separator + "maps" + std::filesystem::path::preferred_separator + "black_1920_1080_dm.jpg";
 

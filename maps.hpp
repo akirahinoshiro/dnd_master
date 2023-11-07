@@ -7,12 +7,11 @@
 class Maps
 {
   public:
-    Maps(std::string mapsFile, std::string mapsFolder, std::string mapsFileAbs);
-    ~Maps();
-    void NewMap(std::string mapName);
+    Maps(std::string file, std::string folder, std::string fileAbs);
+    virtual ~Maps() = default;
+    void NewMap(const std::string &mapName);
     void SaveMaps();
-    void LoadMaps(std::string mapsFileAbs);
-    bool mapsChanged;
+    void LoadMaps(const std::string &mapsFileAbs);
     std::vector<Map> maps;
 
   private:
@@ -20,4 +19,5 @@ class Maps
     std::string mapsFileStr;
     std::string mapsFolderStr;
     std::string mapsFileAbsStr;
+    bool mapsChanged = false;
 };

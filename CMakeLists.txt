@@ -10,7 +10,7 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STR
   if(Callgrind STREQUAL "ON")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic -Werror -O2")
   else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic -Werror -fsanitize=address -O2")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic -Werror -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment -O2")
   endif()
 
 # using Intel C++
@@ -80,4 +80,4 @@ INSTALL(TARGETS ${PROJECT_NAME}
 )
 
 INCLUDE("${CMAKE_CURRENT_SOURCE_DIR}/tests/CMakeLists.txt")
-# INCLUDE("${CMAKE_CURRENT_SOURCE_DIR}/tests_qt/CMakeLists.txt")
+INCLUDE("${CMAKE_CURRENT_SOURCE_DIR}/tests_qt/CMakeLists.txt")

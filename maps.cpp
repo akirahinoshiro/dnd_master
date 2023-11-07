@@ -4,23 +4,16 @@
 #include <fstream>
 #include <iostream>
 
-Maps::Maps(std::string mapsFile, std::string mapsFolder, std::string mapsFileAbs)
-{
-    mapsFileStr = mapsFile;
-    mapsFolderStr = mapsFolder;
-    mapsFileAbsStr = mapsFileAbs;
-    mapsChanged = false;
-}
-
-Maps::~Maps()
+Maps::Maps(std::string file, std::string folder, std::string fileAbs) : mapsFileStr{std::move(file)}, mapsFolderStr{std::move(folder)}, mapsFileAbsStr{std::move(fileAbs)}
 {
 }
 
-void Maps::NewMap(std::string mapName)
+void Maps::NewMap(const std::string &mapName)
 {
-    maps.push_back(
-        Map(mapName + ".json", mapName + std::filesystem::path::preferred_separator,
-            std::filesystem::path(mapsFileAbsStr).parent_path().string() + std::filesystem::path::preferred_separator + mapName + std::filesystem::path::preferred_separator + mapName + ".json"));
+    const Map tmpMap{mapName + ".json", mapName + std::filesystem::path::preferred_separator,
+                     std::filesystem::path(mapsFileAbsStr).parent_path().string() + std::filesystem::path::preferred_separator + mapName + std::filesystem::path::preferred_separator + mapName +
+                         ".json"};
+    maps.push_back(tmpMap);
     boost::property_tree::ptree tmpPtree;
     tmpPtree.put_value(mapName + std::filesystem::path::preferred_separator + mapName + ".json");
     mapsPtree.push_back(std::make_pair("mapFile", tmpPtree));
@@ -37,7 +30,7 @@ void Maps::SaveMaps()
     mapsChanged = false;
 }
 
-void Maps::LoadMaps(std::string mapsFileAbs)
+void Maps::LoadMaps(const std::string &mapsFileAbs)
 {
     maps.clear();
     read_json(mapsFileAbsStr, mapsPtree);
@@ -53,7 +46,8 @@ void Maps::LoadMaps(std::string mapsFileAbs)
             mapFolder = std::filesystem::path(mapFileAbs).parent_path().string().substr(std::filesystem::path(mapsFileAbs).parent_path().string().size() + 1, mapFileAbs.size()) +
                         std::filesystem::path::preferred_separator;
             mapFile = mapFileAbs.substr(mapFileAbs.size() - it->second.get_value<std::string>().size() + mapFolder.size(), mapFileAbs.size());
-            maps.push_back(Map(mapFile, mapFolder, mapFileAbs));
+            const Map tmpMap{mapFile, mapFolder, mapFileAbs};
+            maps.push_back(tmpMap);
         }
     }
 }

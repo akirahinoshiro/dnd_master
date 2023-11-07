@@ -5,16 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-EditCampaign::EditCampaign()
-{
-    filesModified = false;
-}
-
-EditCampaign::~EditCampaign()
-{
-}
-
-void EditCampaign::CreateNew(std::string baseFilename)
+void EditCampaign::CreateNew(const std::string &baseFilename)
 {
     std::filesystem::create_directory(std::filesystem::path(baseFilename).parent_path());
     parentFolderStr = std::filesystem::path(baseFilename).parent_path();
@@ -22,7 +13,7 @@ void EditCampaign::CreateNew(std::string baseFilename)
     baseFileNameStr = baseFilename;
     if (!std::filesystem::is_regular_file(baseFileNameStr))
     {
-        std::ofstream outfile(baseFileNameStr);
+        const std::ofstream outfile(baseFileNameStr);
     }
 
     mapsFolderStr = "maps";
@@ -32,7 +23,7 @@ void EditCampaign::CreateNew(std::string baseFilename)
     std::filesystem::create_directory(std::filesystem::path(mapsFileAbsStr).parent_path());
     if (!std::filesystem::is_regular_file(mapsFileAbsStr))
     {
-        std::ofstream outfile(mapsFileAbsStr);
+        const std::ofstream outfile(mapsFileAbsStr);
     }
 
     enemiesFolderStr = "enemies";
@@ -42,7 +33,7 @@ void EditCampaign::CreateNew(std::string baseFilename)
     std::filesystem::create_directory(std::filesystem::path(enemiesFileAbsStr).parent_path());
     if (!std::filesystem::is_regular_file(enemiesFileAbsStr))
     {
-        std::ofstream outfile(enemiesFileAbsStr);
+        const std::ofstream outfile(enemiesFileAbsStr);
     }
 
     charsFolderStr = "chars";
@@ -52,14 +43,14 @@ void EditCampaign::CreateNew(std::string baseFilename)
     std::filesystem::create_directory(std::filesystem::path(charsFileAbsStr).parent_path());
     if (!std::filesystem::is_regular_file(charsFileAbsStr))
     {
-        std::ofstream outfile(charsFileAbsStr);
+        const std::ofstream outfile(charsFileAbsStr);
     }
 
     SetBaseInformation("new", mapsFolderStr + mapsFileStr, enemiesFolderStr + enemiesFileStr, charsFolderStr + charsFileStr);
     SaveFiles();
 }
 
-void EditCampaign::SetBaseInformation(std::string title, std::string mapsFile, std::string enemiesFile, std::string charsFile)
+void EditCampaign::SetBaseInformation(const std::string &title, const std::string &mapsFile, const std::string &enemiesFile, const std::string &charsFile)
 {
     if (!title.empty())
     {
@@ -106,7 +97,7 @@ void EditCampaign::SaveFiles()
     filesModified = false;
 }
 
-void EditCampaign::LoadFiles(std::string baseFilename)
+void EditCampaign::LoadFiles(const std::string &baseFilename)
 {
     if (std::filesystem::is_regular_file(baseFilename))
     {
@@ -136,11 +127,25 @@ std::string EditCampaign::GetTitle()
     return titleStr;
 }
 
+std::string EditCampaign::GetFileName()
+{
+    return mapsFileStr;
+}
+std::string EditCampaign::GetFolder()
+{
+    return mapsFolderStr;
+}
+
+std::string EditCampaign::GetFileAbs()
+{
+    return mapsFileAbsStr;
+}
+
 void EditCampaign::LoadBaseFile()
 {
     int properties = 0;
     using boost::property_tree::ptree;
-    ptree::const_iterator end = basePtree.end();
+    const ptree::const_iterator end = basePtree.end();
     for (ptree::const_iterator it = basePtree.begin(); it != end; ++it)
     {
         if (it->first == "title")

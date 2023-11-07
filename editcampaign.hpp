@@ -5,20 +5,23 @@
 class EditCampaign
 {
   public:
-    EditCampaign();
-    ~EditCampaign();
-    void CreateNew(std::string baseFilename);
-    void SetBaseInformation(std::string title = "", std::string mapsFile = "", std::string enemiesFile = "", std::string charsFile = "");
+    EditCampaign() = default;
+    virtual ~EditCampaign() = default;
+    void CreateNew(const std::string &baseFilename);
+    void SetBaseInformation(const std::string &title = "", const std::string &mapsFile = "", const std::string &enemiesFile = "", const std::string &charsFile = "");
     void SaveFiles();
-    void LoadFiles(std::string baseFilename);
+    void LoadFiles(const std::string &baseFilename);
     std::string GetTitle();
-    bool filesModified;
-    std::string mapsFolderStr;
-    std::string mapsFileStr;
-    std::string mapsFileAbsStr;
+    std::string GetFileName();
+    std::string GetFolder();
+    std::string GetFileAbs();
 
   private:
     void LoadBaseFile();
+    bool filesModified = false;
+    std::string mapsFolderStr;
+    std::string mapsFileStr;
+    std::string mapsFileAbsStr;
     boost::property_tree::ptree basePtree;
     // boost::property_tree::ptree mapsPtree;
     boost::property_tree::ptree enemiesPtree;

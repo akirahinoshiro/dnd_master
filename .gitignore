@@ -11,6 +11,7 @@
 !CMakeLists.txt
 !.clang-format
 !*.ui
+!checks.json
 #even if in subfolder
 !*/
 build/*

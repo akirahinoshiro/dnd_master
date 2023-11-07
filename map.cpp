@@ -4,14 +4,7 @@
 #include <fstream>
 // #include <iostream>
 
-Map::Map(std::string mapFile, std::string mapFolder, std::string mapFileAbs)
-{
-    mapFileStr = mapFile;
-    mapFolderStr = mapFolder;
-    mapFileAbsStr = mapFileAbs;
-}
-
-Map::~Map()
+Map::Map(std::string file, std::string folder, std::string fileAbs) : mapFileStr{std::move(file)}, mapFolderStr{std::move(folder)}, mapFileAbsStr{std::move(fileAbs)}
 {
 }
 
@@ -20,7 +13,7 @@ void Map::SaveFile()
     std::filesystem::create_directory(std::filesystem::path(mapFileAbsStr).parent_path());
     if (!std::filesystem::is_regular_file(mapFileAbsStr))
     {
-        std::ofstream outfile(mapFileAbsStr);
+        const std::ofstream outfile(mapFileAbsStr);
     }
     write_json(mapFileAbsStr, mapPtree);
 }
@@ -32,11 +25,13 @@ void Map::LoadFile()
     for (ptree::const_iterator it = mapPtree.begin(); it != mapPtree.end(); ++it)
     {
         if (it->first == "title")
+        {
             titleStr = it->second.get_value<std::string>();
+        }
     }
 }
 
-void Map::SetTitle(std::string title)
+void Map::SetTitle(const std::string &title)
 {
     titleStr = title;
     mapPtree.put("title", titleStr);
@@ -47,7 +42,7 @@ std::string Map::GetTitle()
     return titleStr;
 }
 
-void Map::CopyFile(std::string absFilePath)
+void Map::CopyFile(const std::string &absFilePath) const
 {
     if (std::filesystem::is_regular_file(absFilePath))
     {
@@ -61,4 +56,9 @@ void Map::CopyFile(std::string absFilePath)
             throw(std::invalid_argument("resulting filename is not a valid file"));
         }
     }
+}
+
+std::string Map::GetFileName()
+{
+    return mapFileStr;
 }
