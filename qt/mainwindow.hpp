@@ -29,8 +29,16 @@ class MainWindow : public QMainWindow
     Ui::Campaign *uiCampaign;
     Ui::DmMap *uiDm;
     Ui::PcMap *uiPc;
+    QWidget editCampaignWidget;
+    EditCampaign editCampaign;
+    bool campaignOpen = false;
+    QString fileName;
 
   private slots:
+    void CreateNewCampaign();
+    void SaveCampaign();
+    void LoadCampaign();
+    void SetBaseInformation(QString title);
 };
 
 #endif // MAINWINDOW_H
