@@ -14,7 +14,9 @@
 
 namespace fs = std::filesystem;
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), uiEditCampaign(new Ui::EditCampaign), uiCampaign(new Ui::Campaign), uiDm(new Ui::DmMap), uiPc(new Ui::PcMap)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow), uiEditCampaign(new Ui::EditCampaign), uiCampaign(new Ui::Campaign), uiDm(new Ui::DmMap), uiPc(new Ui::PcMap),
+      maps(editCampaign.GetFileName(), editCampaign.GetFolder(), editCampaign.GetFileAbs())
 // MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);

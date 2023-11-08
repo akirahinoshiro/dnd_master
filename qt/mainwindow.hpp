@@ -3,6 +3,7 @@
 
 #include "campaign.hpp"
 #include "editcampaign.hpp"
+#include "maps.hpp"
 #include <QGraphicsScene>
 #include <QMainWindow>
 
@@ -31,6 +32,7 @@ class MainWindow : public QMainWindow
     Ui::PcMap *uiPc;
     QWidget editCampaignWidget;
     EditCampaign editCampaign;
+    Maps maps;
     bool campaignOpen = false;
     QString fileName;
 
