@@ -8,6 +8,7 @@ class Maps
 {
   public:
     Maps(std::string file, std::string folder, std::string fileAbs);
+    void InitializeMaps(std::string file, std::string folder, std::string fileAbs);
     virtual ~Maps() = default;
     void NewMap(const std::string &mapName);
     void SaveMaps();

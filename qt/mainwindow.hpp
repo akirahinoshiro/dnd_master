@@ -34,6 +34,7 @@ class MainWindow : public QMainWindow
     EditCampaign editCampaign;
     Maps maps;
     bool campaignOpen = false;
+    bool campaignChanged = false;
     QString fileName;
 
   private slots:
@@ -41,6 +42,7 @@ class MainWindow : public QMainWindow
     void SaveCampaign();
     void LoadCampaign();
     void SetBaseInformation(QString title);
+    void NewMap();
 };
 
 #endif // MAINWINDOW_H

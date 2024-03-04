@@ -8,6 +8,13 @@ Maps::Maps(std::string file, std::string folder, std::string fileAbs) : mapsFile
 {
 }
 
+void Maps::InitializeMaps(std::string file, std::string folder, std::string fileAbs)
+{
+    mapsFileStr = std::move(file);
+    mapsFolderStr = std::move(folder);
+    mapsFileAbsStr = std::move(fileAbs);
+}
+
 void Maps::NewMap(const std::string &mapName)
 {
     const Map tmpMap{mapName + ".json", mapName + std::filesystem::path::preferred_separator,
