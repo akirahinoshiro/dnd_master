@@ -6,6 +6,7 @@
 #include "maps.hpp"
 #include <QGraphicsScene>
 #include <QMainWindow>
+#include <QTableWidgetItem>
 
 namespace Ui
 {
@@ -14,6 +15,7 @@ class EditCampaign;
 class Campaign;
 class DmMap;
 class PcMap;
+class EditMap;
 } // namespace Ui
 
 class MainWindow : public QMainWindow
@@ -30,12 +32,15 @@ class MainWindow : public QMainWindow
     Ui::Campaign *uiCampaign;
     Ui::DmMap *uiDm;
     Ui::PcMap *uiPc;
+    Ui::EditMap *uiEditMap;
     QWidget editCampaignWidget;
+    QWidget editMapWidget;
     EditCampaign editCampaign;
     Maps maps;
     bool campaignOpen = false;
     bool campaignChanged = false;
     QString fileName;
+    std::size_t mapSelRow;
 
   private slots:
     void CreateNewCampaign();
@@ -43,6 +48,11 @@ class MainWindow : public QMainWindow
     void LoadCampaign();
     void SetBaseInformation(QString title);
     void NewMap();
+    void UpdateMapList();
+    void OnItemChanged(QTableWidgetItem *item);
+    void OnSelectionChanged();
+    void AddDMMap();
+    void AddPCMap();
 };
 
 #endif // MAINWINDOW_H

@@ -3,10 +3,12 @@
 #include "ui_campaign.h"
 #include "ui_dm_map.h"
 #include "ui_edit_campaign.h"
+#include "ui_edit_map.h"
 #include "ui_mainwindow.h"
 #include "ui_pc_map.h"
 #include <QFileDialog>
 #include <QGraphicsPixmapItem>
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QPixmap>
 #include <QStandardItemModel>
@@ -17,27 +19,36 @@
 namespace fs = std::filesystem;
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), uiEditCampaign(new Ui::EditCampaign), uiCampaign(new Ui::Campaign), uiDm(new Ui::DmMap), uiPc(new Ui::PcMap),
+    : QMainWindow(parent), ui(new Ui::MainWindow), uiEditCampaign(new Ui::EditCampaign), uiCampaign(new Ui::Campaign), uiDm(new Ui::DmMap), uiPc(new Ui::PcMap), uiEditMap(new Ui::EditMap),
       maps(editCampaign.GetFileName(), editCampaign.GetFolder(), editCampaign.GetFileAbs())
 // MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     uiEditCampaign->setupUi(&editCampaignWidget);
     ui->editCampaignLayout->addWidget(&editCampaignWidget);
+    uiEditMap->setupUi(&editMapWidget);
+    ui->editMapLayout->addWidget(&editMapWidget);
 
     connect(uiEditCampaign->newEditCampaignBtn, SIGNAL(clicked()), SLOT(CreateNewCampaign()));
     connect(uiEditCampaign->saveEditCampaignBtn, SIGNAL(clicked()), SLOT(SaveCampaign()));
     connect(uiEditCampaign->loadEditCampaignBtn, SIGNAL(clicked()), SLOT(LoadCampaign()));
     connect(uiEditCampaign->titleEdit, SIGNAL(textChanged(QString)), SLOT(SetBaseInformation(QString)));
     connect(uiEditCampaign->addMapBtn, SIGNAL(clicked()), this, SLOT(NewMap()));
+    connect(uiEditCampaign->mapsWidget, &QTableWidget::itemChanged, this, &MainWindow::OnItemChanged);
+    connect(uiEditCampaign->mapsWidget, &QTableWidget::itemSelectionChanged, this, &MainWindow::OnSelectionChanged);
+    connect(uiEditMap->addDMBtn, &QPushButton::clicked, this, &MainWindow::AddDMMap);
+    connect(uiEditMap->addPCBtn, &QPushButton::clicked, this, &MainWindow::AddPCMap);
 
     /// just for testing
-    campaignOpen = true;
     fileName = "/home/tosch/campaigns/test.json";
+    campaignOpen = true;
     editCampaign.LoadFiles(fileName.toStdString());
     uiEditCampaign->titleEdit->setText(QString::fromStdString(editCampaign.GetTitle()));
     campaignChanged = false;
     this->setWindowTitle("MainWindow");
+    maps.InitializeMaps(editCampaign.GetFileName(), editCampaign.GetFolder(), editCampaign.GetFileAbs());
+    maps.LoadMaps(editCampaign.GetFileAbs());
+    UpdateMapList();
 }
 
 MainWindow::~MainWindow()
@@ -54,6 +65,7 @@ MainWindow::~MainWindow()
         {
         }
     }
+    delete uiEditMap;
     delete uiPc;
     delete uiDm;
     delete uiCampaign;
@@ -65,12 +77,15 @@ void MainWindow::CreateNewCampaign()
 {
     // auto fileName = QFileDialog::getSaveFileName(this, tr("Open Image"), QString::fromStdString(fs::current_path()), tr("campaign files (*.json)"));
     fileName = QFileDialog::getSaveFileName(this, tr("New Campaign"), "/home/tosch/", tr("campaign files (*.json)"));
-    if (!fileName.contains(".json"))
+    if (fileName.size())
     {
-        fileName.append(".json");
+        if (!fileName.contains(".json"))
+        {
+            fileName.append(".json");
+        }
+        editCampaign.CreateNew(fileName.toStdString());
+        campaignOpen = true;
     }
-    editCampaign.CreateNew(fileName.toStdString());
-    campaignOpen = true;
 }
 
 void MainWindow::SaveCampaign()
@@ -98,6 +113,7 @@ void MainWindow::LoadCampaign()
             this->setWindowTitle("MainWindow");
             maps.InitializeMaps(editCampaign.GetFileName(), editCampaign.GetFolder(), editCampaign.GetFileAbs());
             maps.LoadMaps(editCampaign.GetFileAbs());
+            UpdateMapList();
         }
     }
 }
@@ -116,30 +132,90 @@ void MainWindow::NewMap()
 {
     if (campaignOpen)
     {
-        auto tmpFileName = QFileDialog::getOpenFileName(this, tr("New Map"), "/home/tosch/", tr("image files (*.png *.jpg *.jpeg *.bmp)"));
-        if (tmpFileName.size() > 5)
+        bool ok;
+        QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"), tr("map filename"), QLineEdit::Normal, "", &ok);
+        if (ok && !text.isEmpty())
         {
-            if (tmpFileName.contains(".png") || tmpFileName.contains(".jpg") || tmpFileName.contains(".jpeg") || tmpFileName.contains(".bmp"))
-            {
-                maps.NewMap(tmpFileName.toStdString());
-                std::string fileNameStr = std::filesystem::path(maps.maps.back().GetFileName()).string() + std::filesystem::path::preferred_separator + "test.bmp";
-                std::cout << fileNameStr << std::endl;
+            maps.NewMap(text.toStdString());
+            maps.SaveMaps();
+            UpdateMapList();
+        }
+    }
+}
 
-                if (std::filesystem::is_regular_file(fileNameStr))
+void MainWindow::UpdateMapList()
+{
+    if (campaignOpen)
+    {
+        /// Disconnect the signal
+        disconnect(uiEditCampaign->mapsWidget, &QTableWidget::itemChanged, this, &MainWindow::OnItemChanged);
+
+        uiEditCampaign->mapsWidget->setRowCount(maps.maps.size());
+        for (int row = 0; row < uiEditCampaign->mapsWidget->rowCount(); ++row)
+        {
+            for (int col = 0; col < uiEditCampaign->mapsWidget->columnCount(); ++col)
+            {
+                if (col == 0)
                 {
-                    maps.maps.front().CopyFile(fileNameStr);
+                    auto item = new QTableWidgetItem(QString::fromStdString(maps.maps.at(row).GetTitle()));
+                    uiEditCampaign->mapsWidget->setItem(row, 0, item);
                 }
-                int row = uiEditCampaign->mapsWidget->rowCount();
-                uiEditCampaign->mapsWidget->insertRow(row);
-                uiEditCampaign->mapsWidget->setItem(row, 0, new QTableWidgetItem(QString::fromStdString(maps.maps.back().GetTitle())));
-                uiEditCampaign->mapsWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(maps.maps.back().GetFileName())));
-                // maps.SaveMaps();
-                // maps.LoadMaps(editCampaign.GetFileAbs());
-                campaignChanged = true;
-                this->setWindowTitle("MainWindow*");
+                else if (col == 1)
+                {
+                    auto item = new QTableWidgetItem(QString::fromStdString(maps.maps.at(row).GetFileName()));
+                    uiEditCampaign->mapsWidget->setItem(row, 1, item);
+                }
             }
         }
-        // campaignChanged = true;
-        // this->setWindowTitle("MainWindow*");
+        /// Reconnect the signal
+        connect(uiEditCampaign->mapsWidget, &QTableWidget::itemChanged, this, &MainWindow::OnItemChanged);
+    }
+}
+
+void MainWindow::OnItemChanged(QTableWidgetItem *item)
+{
+    if (item->column() == 0)
+    {
+        maps.maps.at(item->row()).SetTitle(item->text().toStdString());
+        maps.SaveMaps();
+    }
+    else if (item->column() == 1)
+    {
+        UpdateMapList();
+    }
+}
+
+void MainWindow::OnSelectionChanged()
+{
+    mapSelRow = uiEditCampaign->mapsWidget->currentRow();
+}
+
+void MainWindow::AddDMMap()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "/home/tosch/", tr("Image Files (*.png *.jpg *.bmp)"));
+
+    if (!fileName.isEmpty())
+    {
+        if (std::filesystem::is_regular_file(fileName.toStdString()))
+        {
+            maps.maps.at(mapSelRow).CopyFile(fileName.toStdString());
+            // there is a bug in older gcc versions which did not allow to copy if the file still exists
+            maps.maps.at(mapSelRow).CopyFile(fileName.toStdString());
+        }
+    }
+}
+
+void MainWindow::AddPCMap()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "/home/tosch/", tr("Image Files (*.png *.jpg *.bmp)"));
+
+    if (!fileName.isEmpty())
+    {
+        if (std::filesystem::is_regular_file(fileName.toStdString()))
+        {
+            maps.maps.at(mapSelRow).CopyFile(fileName.toStdString());
+            // there is a bug in older gcc versions which did not allow to copy if the file still exists
+            maps.maps.at(mapSelRow).CopyFile(fileName.toStdString());
+        }
     }
 }
