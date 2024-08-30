@@ -84,7 +84,7 @@ void EditCampaign::SaveFiles()
     }
     if (std::filesystem::is_regular_file(mapsFileAbsStr))
     {
-        // write_json(mapsFileAbsStr, mapsPtree);
+        write_json(mapsFileAbsStr, mapsPtree);
     }
     if (std::filesystem::is_regular_file(enemiesFileAbsStr))
     {

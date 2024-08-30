@@ -39,16 +39,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(uiEditMap->addDMBtn, &QPushButton::clicked, this, &MainWindow::AddDMMap);
     connect(uiEditMap->addPCBtn, &QPushButton::clicked, this, &MainWindow::AddPCMap);
 
-    /// just for testing
-    fileName = "/home/tosch/campaigns/test.json";
-    campaignOpen = true;
-    editCampaign.LoadFiles(fileName.toStdString());
-    uiEditCampaign->titleEdit->setText(QString::fromStdString(editCampaign.GetTitle()));
-    campaignChanged = false;
-    this->setWindowTitle("MainWindow");
-    maps.InitializeMaps(editCampaign.GetFileName(), editCampaign.GetFolder(), editCampaign.GetFileAbs());
-    maps.LoadMaps(editCampaign.GetFileAbs());
-    UpdateMapList();
+    // /// just for testing
+    // fileName = "/home/tosch/campaigns/test.json";
+    // campaignOpen = true;
+    // editCampaign.LoadFiles(fileName.toStdString());
+    // uiEditCampaign->titleEdit->setText(QString::fromStdString(editCampaign.GetTitle()));
+    // campaignChanged = false;
+    // this->setWindowTitle("MainWindow");
+    // maps.InitializeMaps(editCampaign.GetFileName(), editCampaign.GetFolder(), editCampaign.GetFileAbs());
+    // maps.LoadMaps(editCampaign.GetFileAbs());
+    // UpdateMapList();
 }
 
 MainWindow::~MainWindow()
