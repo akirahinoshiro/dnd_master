@@ -23,7 +23,7 @@ class EditCampaign
     std::string mapsFileStr;
     std::string mapsFileAbsStr;
     boost::property_tree::ptree basePtree;
-    boost::property_tree::ptree mapsPtree;
+    // boost::property_tree::ptree mapsPtree;
     boost::property_tree::ptree enemiesPtree;
     boost::property_tree::ptree charsPtree;
     std::string parentFolderStr;
